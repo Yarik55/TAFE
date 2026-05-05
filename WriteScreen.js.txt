@@ -1,0 +1,104 @@
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+
+export default function WriteScreen({ navigation, setEntries }) {
+
+  const [amount, setAmount] = useState('');
+  const [category, setCategory] = useState('');
+  const [type, setType] = useState('Expense');
+
+  const saveEntry = () => {
+    if (!amount) {
+      alert("Enter amount");
+      return;
+    }
+
+    const newEntry = {
+      id: Date.now().toString(),
+      date: new Date().toDateString(),
+      type,
+      category: category || "Miscellaneous",
+      description: `${category} ${type}`,
+      amount: parseFloat(amount),
+    };
+
+    setEntries(prev => [newEntry, ...prev]);
+
+    navigation.goBack();
+  };
+
+  return (
+    <View style={styles.container}>
+
+      <Text style={styles.label}>Amount</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Enter amount"
+        placeholderTextColor="#aaa"
+        keyboardType="numeric"
+        value={amount}
+        onChangeText={setAmount}
+      />
+
+      <Text style={styles.label}>Category</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="e.g. Netflix, Fuel"
+        placeholderTextColor="#aaa"
+        value={category}
+        onChangeText={setCategory}
+      />
+
+      <Text style={styles.label}>Type (Income / Expense)</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Expense or Income"
+        placeholderTextColor="#aaa"
+        value={type}
+        onChangeText={setType}
+      />
+
+      <TouchableOpacity style={styles.saveBtn} onPress={saveEntry}>
+        <Text style={styles.saveText}>Save Entry</Text>
+      </TouchableOpacity>
+
+    </View>
+  );
+}
+
+
+// ✅ THIS IS THE CRITICAL PART (you were missing this)
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#0B1F3A',
+    padding: 16,
+  },
+
+  label: {
+    color: '#A0B3C6',
+    marginBottom: 6,
+    marginTop: 12,
+  },
+
+  input: {
+    backgroundColor: '#132F4C',
+    color: '#fff',
+    padding: 14,
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+
+  saveBtn: {
+    backgroundColor: '#1D9E75',
+    padding: 14,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+
+  saveText: {
+    color: '#fff',
+    fontWeight: '700',
+  },
+});

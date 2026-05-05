@@ -1,0 +1,80 @@
+// Import React hook to manage state (data that can change)
+import { useState } from 'react';
+
+// Navigation container (wraps your whole app for navigation to work)
+import { NavigationContainer } from '@react-navigation/native';
+
+// Stack navigator (used to switch between screens like pages)
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+// Import your screens (different pages of your app)
+import HomeScreen from './Screens/HomeScreen';
+import WriteScreen from './Screens/Writescreen';
+import ViewScreen from './Screens/ViewScreen';
+
+// Create a stack navigator instance
+const Stack = createNativeStackNavigator();
+
+// Main App component
+export default function App() {
+
+  // Create state to store journal entries
+  // entries = current data
+  // setEntries = function to update data
+  const [entries, setEntries] = useState([]);
+
+  return (
+
+    // Wrap entire app so navigation works
+    <NavigationContainer>
+
+      {/* Stack Navigator manages screen transitions */}
+      <Stack.Navigator initialRouteName="Home">
+
+        {/* HOME SCREEN */}
+        <Stack.Screen 
+          name="Home" // internal name used for navigation
+          options={{ title: 'My Journal' }} // title shown in header
+        >
+          {(props) => (
+            <HomeScreen
+              {...props} // pass navigation props (navigation, route, etc.)
+
+              // Pass entries data to HomeScreen
+              entries={entries}
+
+              // Pass function so HomeScreen can update entries
+              setEntries={setEntries}
+            />
+          )}
+        </Stack.Screen>
+
+        {/* WRITE SCREEN */}
+        <Stack.Screen 
+          name="Write" 
+          options={{ title: 'New Entry' }}
+        >
+          {(props) => (
+            <WriteScreen
+              {...props}
+
+              // Allow WriteScreen to add new entries
+              setEntries={setEntries}
+            />
+          )}
+        </Stack.Screen>
+
+        {/* VIEW SCREEN */}
+        <Stack.Screen
+          name="View"
+
+          // Here we directly pass the component (no custom props)
+          component={ViewScreen}
+
+          options={{ title: 'Entry' }}
+        />
+
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}

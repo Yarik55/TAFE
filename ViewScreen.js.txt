@@ -1,0 +1,61 @@
+// Import UI components from React Native
+import { View, Text, StyleSheet } from 'react-native';
+
+// ViewScreen component
+// Receives "route" as a prop from React Navigation
+export default function ViewScreen({ route }) {
+
+  // Extract the "entry" object passed from another screen
+  // (in your case, from HomeScreen using navigation.navigate)
+  const { entry } = route.params;
+
+  return (
+    // Main container for the screen
+    <View style={styles.container}>
+
+      {/* Display the date of the entry */}
+      <Text style={styles.date}>{entry.date}</Text>
+
+      {/* Display the title of the entry */}
+      <Text style={styles.title}>{entry.title}</Text>
+
+      {/* Display the full body/content of the entry */}
+      <Text style={styles.body}>{entry.body}</Text>
+
+    </View>
+  );
+}
+
+// Styles for the screen
+const styles = StyleSheet.create({
+
+  // Main container styling
+  container: {
+    flex: 1,                  // takes full screen height
+    padding: 24,              // spacing inside container
+    backgroundColor: '#f9f9f9',
+  },
+
+  // Date text styling
+  date: {
+    fontSize: 13,
+    color: '#999',
+    marginBottom: 8,
+  },
+
+  // Title styling (large and bold)
+  title: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#222',
+    marginBottom: 16,
+  },
+
+  // Body/content styling
+  body: {
+    fontSize: 16,
+    color: '#444',
+    lineHeight: 26,           // improves readability
+  },
+
+});
